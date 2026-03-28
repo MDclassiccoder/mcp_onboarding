@@ -1,0 +1,62 @@
+{
+  "payloads": [
+    {
+      "event_type": "worker.hired",
+      "event_id": "WD-EVT-2026-00451",
+      "timestamp": "2026-03-28T09:00:00Z",
+      "employee": {
+        "employee_id": "EMP-20260328-001",
+        "first_name": "Priya",
+        "last_name": "Sharma",
+        "email": "priya.sharma@helioshr.com",
+        "department": "Engineering",
+        "job_title": "Senior Backend Engineer",
+        "manager": "Alex Chen",
+        "manager_email": "alex.chen@helioshr.com",
+        "start_date": "2026-04-14",
+        "location": "San Francisco, CA",
+        "employment_type": "full_time",
+        "cost_center": "CC-ENG-4200"
+      }
+    },
+    {
+      "event_type": "worker.hired",
+      "event_id": "WD-EVT-2026-00452",
+      "timestamp": "2026-03-28T10:30:00Z",
+      "employee": {
+        "employee_id": "EMP-20260328-002",
+        "first_name": "Jordan",
+        "last_name": "Mitchell",
+        "email": "jordan.mitchell@helioshr.com",
+        "department": "Sales",
+        "job_title": "Sales Development Representative",
+        "manager": "Sarah Kim",
+        "manager_email": "sarah.kim@helioshr.com",
+        "start_date": "2026-04-07",
+        "location": "New York, NY",
+        "employment_type": "contractor",
+        "contract_end_date": "2026-10-07",
+        "cost_center": "CC-SALES-3100"
+      }
+    },
+    {
+      "event_type": "worker.hired",
+      "event_id": "WD-EVT-2026-00453",
+      "timestamp": "2026-03-28T14:15:00Z",
+      "employee": {
+        "employee_id": "EMP-20260328-003",
+        "first_name": "Taylor",
+        "last_name": "Brooks",
+        "email": "taylor.brooks@helioshr.com",
+        "department": "Growth Engineering",
+        "job_title": "Growth Engineer",
+        "manager": "Dana Reeves",
+        "manager_email": "dana.reeves@helioshr.com",
+        "start_date": "2026-04-21",
+        "location": "Remote - US",
+        "employment_type": "full_time",
+        "cost_center": "CC-GROWTH-5000"
+      }
+    }
+  ]
+}

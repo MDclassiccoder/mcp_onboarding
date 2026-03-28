@@ -1,0 +1,50 @@
+{
+  "Engineering": {
+    "okta_groups": ["eng-all", "github-org", "aws-dev", "datadog-users"],
+    "google_workspace_ou": "/Engineering",
+    "slack_channels": ["#engineering", "#eng-standup", "#deploys", "#incidents"],
+    "jira_projects": ["ENG", "INFRA", "PLATFORM"],
+    "freshservice_category": "Engineering Onboarding",
+    "requires_approval": false
+  },
+  "Sales": {
+    "okta_groups": ["sales-all", "salesforce-users", "gong-users", "zoominfo-users"],
+    "google_workspace_ou": "/Sales",
+    "slack_channels": ["#sales", "#sales-wins", "#competitive-intel", "#deal-desk"],
+    "jira_projects": ["SALES", "CRM"],
+    "freshservice_category": "Sales Onboarding",
+    "requires_approval": false
+  },
+  "Marketing": {
+    "okta_groups": ["marketing-all", "hubspot-users", "figma-users", "canva-users"],
+    "google_workspace_ou": "/Marketing",
+    "slack_channels": ["#marketing", "#content-calendar", "#brand", "#campaigns"],
+    "jira_projects": ["MKT", "CONTENT"],
+    "freshservice_category": "Marketing Onboarding",
+    "requires_approval": false
+  },
+  "People Operations": {
+    "okta_groups": ["people-ops-all", "workday-admin", "greenhouse-users", "culture-amp-users"],
+    "google_workspace_ou": "/PeopleOps",
+    "slack_channels": ["#people-ops", "#dei-council", "#benefits-questions", "#culture"],
+    "jira_projects": ["HR", "PEOPLE"],
+    "freshservice_category": "People Ops Onboarding",
+    "requires_approval": false
+  },
+  "Finance": {
+    "okta_groups": ["finance-all", "netsuite-users", "expensify-admins", "stripe-dashboard"],
+    "google_workspace_ou": "/Finance",
+    "slack_channels": ["#finance", "#procurement", "#budget-requests"],
+    "jira_projects": ["FIN", "PROCUREMENT"],
+    "freshservice_category": "Finance Onboarding",
+    "requires_approval": true
+  },
+  "InfoSec": {
+    "okta_groups": ["infosec-all", "security-tools", "vault-admins", "siem-users", "pentest-team"],
+    "google_workspace_ou": "/InfoSec",
+    "slack_channels": ["#security", "#incident-response", "#vulnerability-mgmt", "#security-alerts"],
+    "jira_projects": ["SEC", "VULN", "COMPLIANCE"],
+    "freshservice_category": "InfoSec Onboarding",
+    "requires_approval": true
+  }
+}
