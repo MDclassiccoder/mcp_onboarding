@@ -10,7 +10,7 @@
 
 Today, when a new hire is entered into Workday, IT receives a Slack message and manually creates accounts across five different systems — Okta, Google Workspace, Slack, Jira, and FreshService. This takes 3–5 business days and frequently results in new hires starting their first day without access to the tools they need.
 
-The proposed system eliminates this manual process entirely. The moment a new hire record is activated in Workday, the system automatically provisions all of their accounts — with the right permissions for their role, department, and location — in minutes rather than days. An AI agent (Claude) reads each hire record, determines exactly what access the person needs based on company policy, creates all accounts, sends a personalized welcome message in Slack, and opens an onboarding ticket in FreshService with their first-week checklist.
+The proposed system eliminates this manual process entirely. The moment a new hire record is activated in Workday, the system automatically provisions all of their accounts — with the right permissions for their role, department, and location (in minutes rather than days). An AI agent (Claude) reads each hire record, determines exactly what access the person needs based on company policy, creates all accounts, sends a personalized welcome message in Slack, and opens an onboarding ticket in FreshService with their first-week checklist.
 
 When the system encounters something it's unsure about — like a new department title it hasn't seen before, or a role that could map to multiple access levels — it pauses and asks a human IT team member to review, rather than guessing.
 
@@ -26,7 +26,7 @@ When the system encounters something it's unsure about — like a new department
 
 **Compliance**: Every provisioning action is logged with a timestamp, what was done, and why. Auditors can review a complete, human-readable trail for any employee's onboarding within seconds.
 
-**How we'd measure success**: Time from Workday activation to full provisioning (target: <30 min), provisioning error rate (target: <2%), IT hours saved per month, and new hire satisfaction survey scores on "day one readiness."
+**How we'd measure success**: Time from Workday activation to full provisioning (target: <30 min), provisioning error rate (target: <2%), IT hours saved per month, and new hire satisfaction survey scores on "day one readiness." At ~50 new hires per month for a 600-person company, 2% means roughly one error per month that requires manual intervention — that's a massive improvement over the current process where essentially 100% requires manual handling.
 
 ---
 
@@ -44,8 +44,8 @@ When the system encounters something it's unsure about — like a new department
 
 ## What You Need to Know to Feel Confident
 
-**Human oversight is built in.** The system doesn't operate as a black box. Every action it takes is logged and explainable. For sensitive roles, it explicitly waits for human approval before proceeding. IT retains full control and can pause, override, or roll back any onboarding at any time.
+**Human oversight is built in.** The system doesn't operate as a black box. Every action it takes is logged and explainable. For sensitive roles, it explicitly waits for human approval before proceeding (In the role_policy.json, Finance and InfoSec have "requires_approval: true"). IT retains full control and can pause, override, or roll back any onboarding at any time, for example "rollback_user" and "check_provisioning_status" are exposed as MCP tools, an IT admin using Claude Desktop or a Slack bot could call them manually at any time.
 
-**Rollout would be gradual.** We'd start by running the system in "shadow mode" alongside the existing manual process for 2–4 weeks — it provisions accounts but IT reviews each one before the new hire is notified. Once confidence is established, we shift to full automation with IT monitoring the dashboard.
+**Rollout would be gradual.** We'd start by running the system in "shadow mode" alongside the existing manual process for 2–4 weeks — it provisions accounts but IT reviews each one before the new hire is notified. Once confidence is established, we shift to full automation with IT monitoring the dashboard. 
 
 **This doesn't replace IT — it amplifies them.** The team still owns the onboarding process, the access policies, and the exception handling. The system handles the repetitive execution so they can focus on the decisions that actually require human judgment.

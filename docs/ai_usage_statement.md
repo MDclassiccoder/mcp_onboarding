@@ -3,17 +3,18 @@
 ## Tools Used
 
 - **Claude (Anthropic)** — Primary AI tool used throughout this assignment via Claude.ai and Claude Code
+- **ChatGPT (OpenAI)** — Used for generating and iterating the diagram. 
 - **Claude Code** — Used for generating and iterating on the Python prototype and MCP server code
 
 ## How AI Was Applied
 
 **Architecture and design (Claude.ai):** I used Claude as a design partner to explore the system architecture. I described the scenario, constraints, and tech stack, and worked iteratively through design decisions — which systems to provision, where the LLM should sit in the workflow, how to structure the MCP server's tool interface, and how to handle failure modes. Claude generated the Mermaid architecture diagram based on the design we converged on together.
 
-**Technical writeup and executive summary (Claude.ai):** Claude drafted both documents based on the architectural decisions we made together. I reviewed and revised the content to ensure it reflected my own engineering judgment — particularly around the sequential provisioning order, the rollback strategy, and the assumptions section, which I validated against my experience building API integration pipelines.
+**Technical writeup and executive summary (Claude.ai):** After writing up the general technical structure and executive summary, claude helped draft a polished version. I also reviewed and revised the content to ensure it reflected my own engineering judgment — particularly around the sequential provisioning order, the rollback strategy, and the assumptions section, which I validated against my experience building API integration pipelines.
 
-**Code generation (Claude Code):** I used Claude Code to generate the Python orchestration prototype and MCP server skeleton. I provided the architectural spec and sample payloads, then iterated on the output — adjusting the mock responses to be realistic, refining the Claude prompt templates, and ensuring the error handling paths actually exercised the rollback logic.
+**Code generation (Claude Code):** After laying out general code infrastructure and design decisions, I used Claude Code to generate the initial Python orchestration prototype and MCP server skeleton. I provided the architectural spec and sample payloads, then iterated on the output — adjusting the mock responses to be realistic, refining the Claude prompt templates, and ensuring the error handling paths actually exercised the rollback logic. 
 
-**Diagramming (Claude.ai):** The architecture diagram was generated as an SVG visualization within Claude.ai based on our collaborative design session.
+**Diagramming (Claude.ai):** The architecture diagram was generated as an SVG visualization within Claude.ai based on our collaborative design session. After I found a few faults with Claude's design capabilities, I utilized ChatGPT and Draw.io to finalize the diagram. 
 
 ## How I Validated and Refined Outputs
 
