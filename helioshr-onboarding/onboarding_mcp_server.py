@@ -11,9 +11,13 @@ Start the server:
 """
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+# Ensure the orchestrator module is importable regardless of working directory
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from mcp.server.fastmcp import FastMCP
 
@@ -45,8 +49,8 @@ provisioning_state: dict[str, dict[str, Any]] = {}
 # MCP Server
 # ---------------------------------------------------------------------------
 mcp = FastMCP(
-    "HeliosHR Onboarding",
-    version="1.0.0",
+    "HeliosHR Onboarding"
+    #version="1.0.0",
 )
 
 
@@ -204,7 +208,7 @@ def rollback_user(employee_id: str) -> dict:
             "message": "This employee was already rolled back.",
         }
 
-    # Build a minimal emp dict for rollback functions
+    # Minimal emp dict for rollback functions
     emp = {"email": f"{employee_id}@helioshr.com"}
     # Try to reconstruct from state
     if "results" in state and "Okta" in state["results"]:

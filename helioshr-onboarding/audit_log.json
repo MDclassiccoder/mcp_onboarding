@@ -1,20 +1,20 @@
 [
   {
-    "timestamp": "2026-03-28T20:15:23.373635+00:00",
+    "timestamp": "2026-03-30T02:26:15.656726+00:00",
     "action": "webhook_received",
     "status": "success",
     "details": {
-      "event_id": "WD-EVT-2026-00453",
-      "employee_id": "EMP-20260328-003",
-      "department": "Growth Engineering"
+      "event_id": "WD-EVT-2026-00451",
+      "employee_id": "EMP-20260328-001",
+      "department": "Engineering"
     }
   },
   {
-    "timestamp": "2026-03-28T20:15:23.374109+00:00",
+    "timestamp": "2026-03-30T02:26:15.657248+00:00",
     "action": "ai_role_mapping",
     "status": "success",
     "details": {
-      "confidence": 0.62,
+      "confidence": 0.95,
       "access_profile": {
         "okta_groups": [
           "eng-all",
@@ -40,23 +40,101 @@
     }
   },
   {
-    "timestamp": "2026-03-28T20:15:23.374583+00:00",
-    "action": "escalation",
-    "status": "triggered",
+    "timestamp": "2026-03-30T02:26:15.657545+00:00",
+    "action": "provision_okta",
+    "status": "success",
     "details": {
-      "employee_id": "EMP-20260328-003",
-      "department": "Growth Engineering",
-      "confidence": 0.62,
-      "channel": "#it-onboarding-review",
-      "message": ":warning: *Onboarding Escalation \u2014 Manual Review Required*\nEmployee: Taylor Brooks (EMP-20260328-003)\nDepartment: Growth Engineering\nTitle: Growth Engineer\nAI Confidence: 62%\n\nThe AI could not confidently map this hire to an existing department policy. Please review and assign the correct access profile in the HeliosHR admin console."
+      "id": "okta-1f802cb82f22",
+      "status": "PROVISIONED",
+      "profile": {
+        "login": "priya.sharma@helioshr.com",
+        "firstName": "Priya",
+        "lastName": "Sharma",
+        "email": "priya.sharma@helioshr.com"
+      },
+      "groups_assigned": [
+        "eng-all",
+        "github-org",
+        "aws-dev",
+        "datadog-users"
+      ],
+      "_links": {
+        "self": "https://helioshr.okta.com/api/v1/users/okta-1f802cb82f22"
+      }
     }
   },
   {
-    "timestamp": "2026-03-28T20:15:23.374589+00:00",
+    "timestamp": "2026-03-30T02:26:15.657626+00:00",
+    "action": "provision_google_workspace",
+    "status": "success",
+    "details": {
+      "kind": "admin#directory#user",
+      "id": "gws-b03c9d368eb0",
+      "primaryEmail": "priya.sharma@helioshr.com",
+      "orgUnitPath": "/Engineering",
+      "isMailboxSetup": true,
+      "creationTime": "2026-03-30T02:26:15.657592+00:00"
+    }
+  },
+  {
+    "timestamp": "2026-03-30T02:26:15.657714+00:00",
+    "action": "provision_slack",
+    "status": "success",
+    "details": {
+      "ok": true,
+      "user": {
+        "id": "UCF14BFA025",
+        "name": "priya.sharma",
+        "real_name": "Priya Sharma"
+      },
+      "channels_joined": [
+        "#engineering",
+        "#eng-standup",
+        "#deploys",
+        "#incidents"
+      ],
+      "invite_sent": true
+    }
+  },
+  {
+    "timestamp": "2026-03-30T02:26:15.657800+00:00",
+    "action": "provision_jira",
+    "status": "success",
+    "details": {
+      "accountId": "jira-4edf70ed2382",
+      "emailAddress": "priya.sharma@helioshr.com",
+      "displayName": "Priya Sharma",
+      "active": true,
+      "projects_assigned": [
+        "ENG",
+        "INFRA",
+        "PLATFORM"
+      ]
+    }
+  },
+  {
+    "timestamp": "2026-03-30T02:26:15.657868+00:00",
+    "action": "provision_freshservice",
+    "status": "success",
+    "details": {
+      "ticket": {
+        "id": "FS-867DFC7C",
+        "subject": "Onboarding: Priya Sharma \u2014 Senior Backend Engineer",
+        "category": "Engineering Onboarding",
+        "status": "Open",
+        "priority": "Medium",
+        "description": "New hire onboarding request for Priya Sharma (EMP-20260328-001).\nDepartment: Engineering\nTitle: Senior Backend Engineer\nStart Date: 2026-04-14\nManager: Alex Chen (alex.chen@helioshr.com)\nLocation: San Francisco, CA\nEmployment Type: full_time\n\nProvisioning includes: Okta groups, Google Workspace OU, Slack channels, Jira projects, and FreshService category as defined by the Engineering access policy.",
+        "requester_email": "alex.chen@helioshr.com",
+        "created_at": "2026-03-30T02:26:15.657835+00:00"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-03-30T02:26:15.658328+00:00",
     "action": "narrative_summary",
     "status": "generated",
     "details": {
-      "summary": "Onboarding for Taylor Brooks was escalated to #it-onboarding-review. The AI agent could not confidently map department 'Growth Engineering' to an existing policy (confidence: 62%). No systems were provisioned. Manual review is required before proceeding."
+      "summary": "Onboarding for Priya Sharma (EMP-20260328-001) completed successfully. All five provisioning steps (Okta, Google Workspace, Slack, Jira, FreshService) finished without error. The AI agent mapped the 'Engineering' department with 95% confidence. A welcome message was prepared for Slack, and a FreshService onboarding ticket was created."
     }
   }
 ]
