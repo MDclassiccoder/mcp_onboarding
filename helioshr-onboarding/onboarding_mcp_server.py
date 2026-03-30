@@ -48,10 +48,7 @@ provisioning_state: dict[str, dict[str, Any]] = {}
 # ---------------------------------------------------------------------------
 # MCP Server
 # ---------------------------------------------------------------------------
-mcp = FastMCP(
-    "HeliosHR Onboarding"
-    #version="1.0.0",
-)
+mcp = FastMCP("HeliosHR Onboarding")
 
 
 @mcp.tool()
