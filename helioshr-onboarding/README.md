@@ -8,6 +8,7 @@ All external API calls and Claude AI calls are **mocked** — no API keys or liv
 
 ```bash
 # No external dependencies needed for the orchestrator
+cd helioshr-onboarding
 python onboarding_orchestrator.py
 ```
 
@@ -83,16 +84,22 @@ Add to your Claude Desktop MCP config (`claude_desktop_config.json`):
 
 ```
 helioshr-onboarding/
-├── onboarding_orchestrator.py   # Main orchestration script (CLI)
-├── onboarding_mcp_server.py     # MCP server exposing tools
-├── role_policy.json             # Department-to-access policy mappings
-├── sample_payloads.json         # Sample Workday webhook payloads
-├── requirements.txt             # Python dependencies (mcp)
-├── audit_log.json               # Generated after each run
-└── README.md
+├── onboarding_orchestrator.py
+├── onboarding_mcp_server.py
+├── role_policy.json
+├── sample_payloads.json
+├── requirements.txt
+├── README.md
+docs/
+├── technical_writeup.md
+├── executive_summary.md
+├── ai_usage_statement.md
+└── mcp_onboarding.png
 ```
 
 ## Architecture
+
+![Architecture Diagram](../docs/mcp_onboarding.png)
 
 ```
 Workday Webhook ──► Orchestrator ──► Claude AI (mock) ──► Role Mapping

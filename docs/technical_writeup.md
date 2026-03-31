@@ -11,9 +11,11 @@
 
 HeliosHR already runs n8n as its primary automation platform. Rather than introducing a new orchestration framework, this design uses n8n as the workflow trigger and routing layer, keeping the operational footprint familiar to the existing IT team. n8n receives the Workday webhook, validates the payload structure, and forwards the hire record to the MCP Onboarding Server for intelligent processing. This separation means n8n handles what it's good at (webhook management, retry scheduling, workflow visibility) while the MCP server handles what requires intelligence (role interpretation, content generation, exception handling).
 
+This separation also provides a security benefit — n8n acts as an ingress gateway that validates webhook signatures and enforces IP allowlisting, so the MCP server never needs to be exposed to the public internet. It also gives IT a visual dashboard for monitoring onboarding runs and a control layer to throttle processing during high-volume cohort start dates.
+
 ### Why an MCP server as the integration backbone
 
-The Model Context Protocol (MCP) server is the central nervous system of this design. It exposes five tools — `provision_user`, `check_status`, `rollback_user`, `get_role_policy`, and `escalate_to_it` — that can be called by Claude or any MCP-compatible client. This architectural choice provides several advantages: the onboarding workflow becomes composable (an IT admin could trigger provisioning from Claude Desktop, a Slack bot, or the n8n workflow without duplicating logic), the tool definitions serve as self-documenting API contracts, and the server enforces authentication and authorization at the protocol layer rather than per-integration.
+The Model Context Protocol (MCP) server is the central nervous system of this design. It exposes five tools — provision_user, check_provisioning_status, rollback_user, get_role_policy, and escalate_to_it — that can be called by Claude or any MCP-compatible client. This architectural choice provides several advantages: the onboarding workflow becomes composable (an IT admin could trigger provisioning from Claude Desktop, a Slack bot, or the n8n workflow without duplicating logic), the tool definitions serve as self-documenting API contracts, and the server enforces authentication and authorization at the protocol layer rather than per-integration. MCP was chosen over a traditional REST API because it provides tool discoverability — any MCP-compatible client can connect and inspect available tools and their schemas without custom integration work. This aligns with the broader industry direction for AI-to-tool communication and future-proofs the system as HeliosHR adopts additional MCP-compatible tooling.
 
 ### Why Claude as an active agent — not a chatbot
 
@@ -33,14 +35,16 @@ Claude serves four distinct roles in this workflow, none of which are conversati
 
 ### Sequential provisioning with compensating rollback
 
-Systems are provisioned in dependency order: Okta first (identity is the foundation), then Google Workspace (requires Okta SSO), then Slack, Jira, and FreshService. If any step fails after retries, the workflow executes compensating transactions — rolling back successfully provisioned accounts in reverse order. This prevents orphaned accounts that would need manual cleanup.
+Systems are provisioned in dependency order: Okta first (identity is the foundation), then Google Workspace (requires Okta SSO), then Slack, Jira, and FreshService. If any step fails after retries, the workflow executes compensating transactions — rolling back successfully provisioned accounts in reverse order. This prevents orphaned accounts that would need manual cleanup. 
+Compensating rollback was intentionally chosen over retry-only strategies because a partially provisioned employee — with an Okta account but no Slack access, for example — creates a worse experience than no provisioning at all. A clean rollback followed by IT escalation ensures the new hire either gets full access or gets a human-managed fallback, never a broken middle state.
 
 ### Retry strategy
 
-Each API call uses exponential backoff with jitter (base 2s, max 30s, 3 attempts). Retries are idempotent by design — each provisioning call includes a unique `onboarding_request_id` that downstream systems use for deduplication. If all retries exhaust, the workflow logs the failure, rolls back, and escalates to IT.
+Each API call uses exponential backoff with jitter (base 2s, max 30s, 3 attempts). Retries are idempotent by design — each provisioning call includes a unique `onboarding_request_id` that downstream systems use for deduplication. If all retries exhaust, the workflow logs the failure, rolls back, and escalates to IT. This retry logic can be adapted after the shadow run of the MCP server, either adding or subtracting retries. 
 
 ### Edge cases handled
 
+Beyond the three scenarios demonstrated in the prototype (happy path, failure with rollback, and edge case escalation), the production system would handle these additional edge cases:
 - **Duplicate hire records**: The system checks for existing accounts by email before provisioning. If accounts already exist, it logs a warning and skips that system rather than failing.
 - **Rehires**: If a previously deactivated employee is rehired, the system reactivates existing accounts rather than creating new ones, preserving historical data.
 - **Contractor vs. FTE**: The Workday `worker_type` field determines the access tier. Contractors receive a restricted Okta group with time-bounded access and no Jira project admin privileges.
@@ -52,15 +56,15 @@ Each API call uses exponential backoff with jitter (base 2s, max 30s, 3 attempts
 
 ### Least-privilege service accounts
 
-Each target system integration uses a dedicated OAuth 2.0 service account with the minimum scopes required. The Okta service account can create users and assign groups but cannot modify admin policies. The Slack bot token can invite users and post messages but cannot access message history. Credentials are stored in a secrets manager (e.g., AWS Secrets Manager or HashiCorp Vault) and rotated on a 90-day schedule.
+Each target system integration uses a dedicated OAuth 2.0 service account with the minimum scopes required. The Okta service account can create users and assign groups but cannot modify admin policies. The Slack bot token can invite users and post messages but cannot access message history. Credentials are stored in a secrets manager (e.g., Azure Key Vault, AWS Secrets Manager or HashiCorp Vault) and rotated on a 90-day schedule.
 
 ### Immutable audit log
 
-Every action — successful or failed — is recorded in a structured JSON audit log with fields for `timestamp`, `action`, `target_system`, `input_payload`, `response_status`, `response_body`, and `actor` (either "claude-agent" or "human-escalation"). Logs are append-only and written to a durable store (e.g., S3 with versioning enabled or a dedicated audit database). Claude's human-readable narrative is stored alongside each log entry for compliance officers who need to review provisioning decisions without parsing JSON.
+Every action — successful or failed — is recorded in a structured JSON audit log with fields for `timestamp`, `action`, `target_system`, `input_payload`, `response_status`, `response_body`, and `actor` (either "claude-agent" or "human-escalation"). Logs are append-only and written to a durable store (e.g., Azure append only Blob, S3 with versioning enabled or a dedicated audit database). Claude's human-readable narrative is stored alongside each log entry for compliance officers who need to review provisioning decisions without parsing JSON.
 
 ### Approval gates
 
-For sensitive roles (InfoSec, Finance, Executive), the workflow pauses before provisioning and routes an approval request to the relevant team lead via Slack. Provisioning only proceeds after explicit approval, with the approver's identity recorded in the audit log.
+For sensitive roles (InfoSec, Finance, Executive), the role policy includes an requires_approval flag. In production, the workflow would pause before provisioning and route an approval request to the relevant team lead via Slack, proceeding only after explicit approval with the approver's identity recorded in the audit log.
 
 ---
 

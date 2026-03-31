@@ -91,13 +91,14 @@ def write_audit_log(path: Path) -> None:
 # ---------------------------------------------------------------------------
 # Load policy & payloads
 # ---------------------------------------------------------------------------
+#Gets the directory where the orchestrator script lives, basically ensures the script can find its JSON files regardless of where it is run from
 BASE_DIR = Path(__file__).resolve().parent
 
-
+# Reads role_policy.json and parses it into a Python dictionary. This is the policy document that Claude references to map departments to access profiles.
 def load_role_policy() -> dict[str, Any]:
     return json.loads((BASE_DIR / "role_policy.json").read_text())
 
-
+# Reads sample_payloads.json and returns the list of hire records. These are the Workday webhook payloads
 def load_sample_payloads() -> list[dict[str, Any]]:
     data = json.loads((BASE_DIR / "sample_payloads.json").read_text())
     return data["payloads"]
